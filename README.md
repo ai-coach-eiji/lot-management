@@ -19,4 +19,4 @@ Production Config
 北島栄司 （[https://twitter.com/1220castillo](https://twitter.com/1220castillo)）
 
 # License
-- This project is licensed under the MIT License - see the [LICENSE]() file for details.
+- This project is licensed under the MIT License - see the [LICENSE](https://github.com/ai-coach-eiji/lot-management/blob/main/LICENSE) file for details.
