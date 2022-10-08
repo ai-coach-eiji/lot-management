@@ -75,9 +75,6 @@ SITE_ID = 1
 
 SOCIALACCOUNT_LOGIN_ON_GET=True # Googleアカウントでログインする際に確認ページを挟まない
 
-# 268382525733-5297h6rnkckrlf4kvcjdvam8gvaa4ddu.apps.googleusercontent.com
-# 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
-
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
@@ -182,14 +179,6 @@ STATIC_ROOT = os.path.join(BASE_DIR,'static') # リバースプロキシ配信�
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-# try:
-#     from .local_settings import SECRET_KEY
-
-#     SECRET_KEY = SECRET_KEY
-# except ImportError:
-#     pass
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL') # メール送信元アドレス
 EMAIL_HOST = 'smtp.gmail.com'
@@ -197,7 +186,5 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = env('EMAIL_HOST_USER') # メールアドレス
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD') # アプリパスワード
 EMAIL_USE_TLS = True
-
-#LOGIN_URL = 'accounts:login'
 
 

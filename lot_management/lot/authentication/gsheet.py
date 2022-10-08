@@ -39,7 +39,7 @@ def get_worksheet_and_id(sheet_name):
 def google_auth():
     #jsonファイルを使って認証情報を取得
     scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-    json_file = os.path.join(settings.BASE_DIR, 'lot/static/lot', json_name) #'lot-management-354410-d380611e06eb.json')
+    json_file = os.path.join(settings.BASE_DIR, 'lot/static/lot', json_name)
     c = ServiceAccountCredentials.from_json_keyfile_name(json_file, scope)
 
     #認証情報を使ってスプレッドシートの操作権を取得
