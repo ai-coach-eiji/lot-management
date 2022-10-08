@@ -35,6 +35,9 @@ if DEBUG:
 else:
     SECURE_SSL_REDIRECT = True
 
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
 #ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 

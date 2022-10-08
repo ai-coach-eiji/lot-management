@@ -3,3 +3,4 @@
 .venv
 .env
 sheet_keys.py
+db.sqlite3
