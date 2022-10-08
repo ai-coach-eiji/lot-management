@@ -1,4 +1,4 @@
-[Japanese/<a href="">English</a>]
+[Japanese/<a href="https://github.com/ai-coach-eiji/lot-management/blob/main/README_EN.md">English</a>]
 
 # lot-management
 Hope this helps your lot management.
@@ -17,13 +17,12 @@ Local Config
 ---
 - [x] ~~Display the snapshot image~~
 - [x] ~~Read the QRcode image~~
-- [] Replace the background with video input
-- [] Outputs the decode contents as csv file
+- [ ] Replace the background with video input
+- [ ] Outputs the decode contents as csv file
 
 Production Config
 ---
-- [] Check with iPhone
-- 
+- [ ] Check with iPhone
 
 # Reference
 - OpenCV: [カメラから動画を撮影する](http://labs.eecs.tottori-u.ac.jp/sd/Member/oyamada/OpenCV/html/py_tutorials/py_gui/py_video_display/py_video_display.html)

@@ -1,4 +1,4 @@
-[<a href="">Japanese</a>/English]
+[<a href="https://github.com/ai-coach-eiji/lot-management">Japanese</a>/English]
 
 # lot-management
 Hope this helps your lot management.
@@ -19,7 +19,7 @@ Local Config
 - [x] ~~Display the snapshot image~~
 - [x] ~~Read the QRcode image~~
 - [x] ~~Replace the background with video input~~
-- [] Add the scan sound
+- [ ] Add the scan sound
 - [x] ~~Integrate prd. and ship. sheets~~
 - [x] ~~Create the update sheets system~~
 - [x] ~~Create the output csv system~~
