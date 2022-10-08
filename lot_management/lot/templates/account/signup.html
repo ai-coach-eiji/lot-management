@@ -1,0 +1,31 @@
+{% extends 'lot/base.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+    <br>
+
+    <div class="container">
+        <p>すでにアカウントをお持ちの場合は<a href="{% url 'account_login' %}">ログイン</a></p>
+        <br>
+        <div class="row">
+            <div class="card">
+                <div class="card-action center grey darken-1 white-text">
+                    <h4>アカウント登録</h4>
+                </div>
+
+                <div class="card-content">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        {{ form.as_p }}
+                        <input class="btn center amber darken-1" type="submit" value="登録">
+                    </form>
+                </div>
+            </div>
+
+            <br>
+            
+        </div>
+    </div>
+{% endblock %}

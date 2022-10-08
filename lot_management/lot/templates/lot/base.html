@@ -1,0 +1,137 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- materialize -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Google icon font -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- customcss -->
+    <link rel="stylesheet" type="text/css" href="{% static 'lot/css/base.css' %}">
+    <!--favicon-->
+    <link rel="shortcut icon" href="{% static 'favicon/ark_logo.png' %}"/>
+    {% block extracss %}{% endblock %}
+    {% block extrajs %}{% endblock %}
+</head>
+
+<!-- jQuery, Materialize JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<!-- custom js-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+<body>
+    <!-- header -->
+    <nav>
+        <div class="nav-wrapper amber darken-1">
+          <a href="{% url 'lot:index' %}" class="brand-logo">LOT App</a>
+          <a href="" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+          <ul class="right hide-on-med-and-down">
+            {% if user.is_authenticated %}
+              <li><a href="{% url 'lot:index' %}"><i class="material-icons">home</i></a></li>
+              <li><a href="{% url 'lot:product' %}"><i class="material-icons">add_box</i></a></li>
+              <li><a href="{% url 'lot:stock' %}"><i class="material-icons">poll</i></a></li>
+              <li><a href="{% url 'lot:edit' %}"><i class="material-icons">edit</i></a></li>
+              <li><a href="{% url 'lot:mypage' %}"><i class="material-icons">person</i></a></li>
+              {% if user.is_superuser %}
+                <li><a href="{% url 'lot:download' %}"><i class="material-icons">file_download</i></a></li>
+                <li><a href="{% url 'lot:print' %}"><i class="material-icons">print</i></a></li>
+              {% endif %}
+            {% else %}
+              <li><a href="{% url 'account_login' %}"><i class="material-icons">person</i></a></li>
+            {% endif %}
+              
+            </ul>
+          </div>
+        </nav>
+        
+        <ul class="sidenav" id="mobile-demo">
+          {% if user.is_authenticated %}
+            <li><a href="{% url 'lot:index' %}"><i class="material-icons">home</i>ホーム</a></li>
+            <li><a href="{% url 'lot:product' %}"><i class="material-icons">add_box</i>製造フォーム</a></li>
+            <li><a href="{% url 'lot:stock' %}"><i class="material-icons">poll</i>在庫確認</a></li>
+            <li><a href="{% url 'lot:edit' %}"><i class="material-icons">edit</i>出荷フォーム</a></li>
+            <li><a href="{% url 'lot:mypage' %}"><i class="material-icons">person</i>マイページ</a></li>
+            {% if user.is_superuser %}
+              <li><a href="{% url 'lot:download' %}"><i class="material-icons">file_download</i>製造出荷完了</a></li>
+              <li><a href="{% url 'lot:print' %}"><i class="material-icons">print</i>出荷在庫管理記録</a></li>
+            {% endif %}
+          {% else %}
+            <li><a href="{% url 'account_login' %}"><i class="material-icons">person</i></a></li>
+          {% endif %}
+        </ul>
+
+    <main>
+        {% if messages %}
+            <br>
+            <div>
+                <!-- 正常の場合はフラッシュメッセージを緑色で描画-->
+                {% for message in messages %}
+                    <p>{{ message.tags }}</p>
+                    {% if message.tags == 'success' %}
+                        <div class="alert card green lighten-4 green-text text-darken-4">
+                            <div class="card-content">
+                                <li class="valign-wrapper">
+                                    <i class="material-icons">check_circle</i>
+                                    <p>{{ message }}</p>
+                                </li>
+                            </div>
+                        </div>
+                    {% elif message.tags == 'info' %}
+                        <div class="alert card blue lighten-4 blue-text text-darken-4">
+                            <div class="card-content">
+                                <li class="valign-wrapper">
+                                    <i class="material-icons">info</i>
+                                    <p>{{ message }}</p>
+                                </li>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="alert card red lighten-4 red-text text-darken-4">
+                            <div class="card-content">
+                                <li class="valign-wrapper">
+                                    <i class="material-icons">report</i>
+                                    <p>{{ message }}</p>
+                                </li>
+                            </div>
+                        </div>
+                    {% endif %}      
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+
+        {% block extra_body %}
+        {% endblock %}
+    </main>
+
+    <!-- footer -->
+    <br>
+    <footer class="page-footer amber darken-1">
+        <div class="footer-copyright amber darken-1">
+          <div class="container">
+            <p>&copy; 2022 <a class="grey-text text-lighten-4" href="https://bicice.com/71074/%E3%82%A2%E3%82%A4%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%B3cafe%E3%82%A2%E3%83%BC%E3%82%AF/">ARK</a></p>
+          </div>
+        </div>
+    </footer>
+
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems, 'html');
+        });
+    </script>
+
+    {% block extrascript %}
+    {% endblock %}
+</body>
+</html>

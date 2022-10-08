@@ -1,0 +1,164 @@
+{% extends 'lot/base.html' %}
+{% load static %}
+
+{% block extracss %}
+    <!-- customcss -->
+    <link rel="stylesheet" type="text/css" href="{% static 'lot/css/index.css' %}">
+{% endblock %}
+
+
+{% block extrajs %}
+    
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <!--<a class="btn yellow" href="{% url 'lot:stream' %}" alt="">Scan</a>-->
+        
+        <br>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="scan-button">
+                <button id="scan-btn" class="btn center amber darken-1" type="submit" name="scan" onclick="send_img()">Scan</button>
+            </div>
+        </form>
+        <br>
+
+        <div class="row">
+            <div class="col s12">
+                <img src="{% url 'lot:stream' %}" id="stream"/>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col s12">
+                {% if not image %}
+                    <img src="{% static 'lot/img/scan_text.png' %}"/>
+                {% else %}
+                    <img src="data:image/png;base64,{{ image }}" id="scanned"/>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- スキャンした商品の出荷先を送信した際の結果を表示（出荷先を記入しました or すべての商品に出荷先が記入されています） -->
+        {% if updated_ship %}
+            <div id="ship_comfirmed"></div> 
+        {% elif no_candidate %}
+            <div id="no_candidate"></div>  
+        {% elif date_mismatch %}
+            <div id="date_mismatch"></div>  
+        {% endif %}
+        
+        <br>
+
+        {% if shipping_place %}
+            <!-- Modal Trigger -->
+            <a class="waves-effect waves-light btn modal-trigger not-visible" href="#modal">Modal</a>
+            <br>
+
+            <!-- Modal Structure -->
+            <div id="modal" class="modal">
+                <div class="modal-content">
+                    <p>こちらの出荷先でよろしいでしょうか？</p>
+                    <h5 class="ship_comfirm">{{ shipping_place }}</h5>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <button class="btn-flat modal-close green accent-2" type="submit" name="shipping" value="{{ shipping_place }}">確定</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="#modal2" class="modal-close waves-effect btn-flat orange darken-4 btn modal-trigger">変更</a>
+                </div>
+            </div>
+
+            <!-- Modal Structure -->
+            <div id="modal2" class="modal">
+                <div class="modal-content">
+                    <h5>出荷先をもう一度スキャンしてください。</h5>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-close waves-effect btn-flat green accent-2">OK</a>
+                </div>
+            </div>
+
+        {% endif %}
+
+        
+            
+
+    </div>
+    <script>
+        const comfirmedElem = document.getElementById('ship_comfirmed');
+        const noCandidateElem = document.getElementById('no_candidate');
+        const dateMismatchElem = document.getElementById('date_mismatch');
+        
+        if (comfirmedElem) {
+            window.Materialize.toast("出荷先を記録しました", 4000);
+        }
+
+        else if (noCandidateElem) {
+            window.Materialize.toast("{{ no_candidate.0 }}", 4000);
+        }
+        else if (dateMismatchElem) {
+            window.Materialize.toast("{{ date_mismatch.0 }}", 4000);
+        }
+    </script>
+
+    <script>
+        function getBase64Image(img) {
+            var canvas = document.createElement("canvas");
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            console.log(canvas.width, canvas.height);
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            var dataURL = canvas.toDataURL("image/png");
+            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        }
+
+        function send_img() {
+            console.log('sending');
+            var base64 = getBase64Image(document.getElementById("stream"));
+            document.getElementById('scan-btn').value = base64;
+            console.log('WebCamera off');
+            document.getElementById("stream").src = "{% static 'lot/img/processing.png' %}";
+        }
+        
+    </script>
+
+    <script>
+        const elem = document.getElementById('modal');
+        const elem2 = document.getElementById('modal2');
+        const instance2 = M.Modal.init(elem2, {dismissible: false});
+
+        if (elem) {
+            const instance = M.Modal.init(elem, {dismissible: false});
+            instance.open();
+        }
+        
+    </script>
+
+    <script>
+        const img = document.getElementById('scanned');
+
+        function video_on() {
+            console.log('on');
+            document.getElementById("stream").src = "stream/";
+        }
+
+        function video_off() {
+            console.log('off');
+            document.getElementById("stream").src = "{% static 'lot/img/scan_text.png' %}";
+        }
+        
+        $("#scanned").bind("load", function(){
+            video_on();
+        });
+        
+    </script>
+
+
+{% endblock %}

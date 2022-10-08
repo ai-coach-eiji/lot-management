@@ -1,0 +1,62 @@
+
+{% extends 'lot/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block title %}Log In{% endblock %}
+
+{% block extracss %}
+<link rel="stylesheet" type="text/css" href="{% static 'lot/css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+    <br>
+
+    <div class="container">
+        {% if form.errors %}
+            <p class="red-text">ユーザー名もしくはパスワードが一致しません</p>
+        {% endif %}
+
+        <div class="row">
+                        
+            <div class="card">
+                <div class="card-action center grey darken-1 white-text">
+                    {% blocktrans with site.name as site_name %}
+                        <h4>{{ site_name }} にログイン</h4>
+                    {% endblocktrans %}
+                   
+                </div>
+
+                <div class="card-content">
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="email" name="login" placeholder="メールアドレス" autocomplete="email" required="" id="id_login" autofocus>
+                        <input type="password" name="password" id="id_password" autocomplete="current-password" class="form-control" placeholder="パスワード" required autofocus>
+                        <input type="submit" class="btn amber darken-1" value="ログイン">
+                        <p><a href="{% url 'account_reset_password' %}">パスワードをお忘れの場合はこちら</a></p>
+                        <input type="hidden" name="next" value="{% url 'lot:mypage' %}">
+                    </form>
+                </div>
+            </div>
+
+            <br>
+
+            {% get_providers as socialaccount_providers %}
+            {% if socialaccount_providers %}
+                <div class="row center">
+                    <p>SNSアカウントでログイン:</p>
+                    <a href="{% provider_login_url 'google' %}"><img src="{% static 'lot/img/google_signin.png' %}"></a>
+                </div>
+
+            {% endif %}
+
+            {% if not user.is_authenticated %}
+                <br>
+                <div class="row center">
+                    <p>アカウントをお持ちでない場合は<a href="{% url 'account_signup' %}">登録</a></p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

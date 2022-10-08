@@ -1,0 +1,33 @@
+{% extends "socialaccount/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="container">
+        <h4>{% trans "Sign Up" %}</h4>
+        <br>
+    
+        <div class="row">
+            <p>
+              {% blocktrans with provider_name=account.get_provider.name site_name=site.name %}
+                  {{provider_name}} アカウントを使って {{site_name}} にログインしようとしています。<br>
+                  ご本人様の場合は以下のメールアドレスを確認の上、ご登録ください。
+              {% endblocktrans %}
+            </p>
+
+            <form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
+              {% csrf_token %}
+              {{ form.as_p }}
+
+              {% if redirect_field_value %}
+                  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+              {% endif %}
+              <button class="btn" type="submit">登録 &raquo;</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

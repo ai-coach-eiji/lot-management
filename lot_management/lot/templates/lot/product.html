@@ -1,0 +1,291 @@
+{% extends 'lot/base.html' %}
+{% load static %}
+
+{% block extracss %}
+    <!-- customcss -->
+    <link rel="stylesheet" type="text/css" href="{% static 'lot/css/product.css' %}">
+{% endblock %}
+
+
+{% block extrajs %}
+    
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <br>
+
+        <form id="form" class="col s12" action="" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">today</i>
+                    <input id="prd_date" type="text" class="datepicker" required>
+                    <label for="prd_date">製造日</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s9">
+                    <i class="material-icons prefix">store</i>
+                    <select id="prd_select" required>
+                        <option value="" disabled selected>製造種目を選択</option>
+                        {% for key, value in item_dict.items %}
+                            <option id="{{ key }}">{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div id="qr_no" class="input-field col s3">
+                    <input value="QR_No自動入力" disabled>
+                </div>
+            </div>
+            
+            <br>
+
+            <div class="row">
+                <div class="input-field col s2">
+                    <label for="ice_count">個数</label>
+                </div>
+                
+                <div id="selected_count" class="input-field col s10">
+                    <input id="ice_count" maxlength="3" type="text" inputmode="numeric" pattern="\d*" onchange="countCheck()" required>
+                    <div id="alert2"></div>
+                </div>
+            </div>
+
+            <br>
+
+            <div>
+                <!-- Modal Trigger -->
+                <button id="confirm-btn" data-target="modal" type="submit" class="btn modal-trigger amber darken-1" onclick="get_values()" disabled>確認</button>
+            </div>
+        </form>
+
+        <!-- Modal Structure -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <h5 id="register_comfirm">
+
+                </h5>
+                <p>上記の内容でよろしいでしょうか？</p>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <button id="confirmed" class="btn-flat modal-close green accent-2" name="register" value="">Yes</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="edit-btn" class="btn center modal-close red darken-1">No</button>
+            </div>
+        </div>
+
+        {% if written %}
+            <div id="written"></div>
+                
+        {% endif %}
+
+    </div>
+
+    <script>
+        
+
+        
+    </script>
+
+    <script>
+        // 製造日要素を取得
+        var prdDateTag = document.getElementById("prd_date");
+        // 製造種目のプルダウンメニューselect要素を取得
+        var itemSelect = document.getElementById("prd_select");
+        // 送信ボタン
+        const confirmBtn = document.getElementById('confirm-btn');
+
+        // 製造日にイベント「change」を登録
+        prdDateTag.addEventListener("change", function(){
+            let params = {};
+
+            let qrTag = document.getElementById('qr_no');
+            let itemSelected = document.getElementById("prd_select");
+
+            var prdDate_value = prdDateTag.value;
+            params["prd_date"] = prdDate_value;
+            console.log("製造日: ", prdDate_value)
+
+            var dateStr = prdDate_value.split('/').join('');
+            console.log('製造日文字列: ', dateStr);
+
+            if (itemSelected.value) {
+                console.log('製造種目も選択されています: ', itemSelected.value);
+                last2num = itemSelected.options[itemSelected.selectedIndex].id;
+                let qrNo = dateStr + last2num;
+
+                console.log('QR_No: ', qrNo); // QR_Noを作成
+                qrTag.innerHTML = `<input id="theQr_No" value="${qrNo}" name="${qrNo}" disabled>`;
+            }
+        });
+
+        // 製造種目にイベント「change」を登録
+        itemSelect.addEventListener("change", function(){
+            let params = {};
+
+            let qrTag = document.getElementById('qr_no');
+            let prdDateTag = document.getElementById("prd_date");
+
+            {% autoescape off %}
+            const itemDict = {{ item_dict }};
+            {% endautoescape %}
+
+            console.log("選択タグ: ", itemSelect)
+            var itemSelect_value = itemSelect.value;
+            params["製造種目"] = itemSelect_value;
+            console.log("製造種目: ", itemSelect_value)
+
+            for (let [number, iceName] of Object.entries(itemDict)) {
+                //console.log('key:' + key + ' value:' + value);
+                if(String(iceName)==String(itemSelect_value)) {
+                    var iceNumber = number;
+                    //kindTag.innerHTML = `<input id="slectedIce" value="${iceKind}" name="${key}" disabled>`;
+                    console.log("選択したアイスの番号: ", iceNumber);
+                }
+            }
+
+            if (prdDateTag.value) {
+                console.log('製造日も記入されています: ', prdDateTag.value);
+
+                let dateStr = prdDateTag.value.split('/').join('');
+                let qrNo = dateStr + iceNumber;
+
+                console.log('QR_No: ', qrNo); // QR_Noを作成
+                qrTag.innerHTML = `<input id="theQr_No" value="${qrNo}" name="${qrNo}" disabled>`;
+            }
+        });
+        
+    </script>
+
+    <script>
+        const written = document.getElementById('written');
+        
+        if (written) {
+            window.Materialize.toast("製造内容を記録しました", 4000);
+        }
+    </script>
+
+    <script>
+        // 確認ボタン押下で取得される値
+        async function get_values() {
+            let params = {};
+            const confBtn = document.getElementById("confirmed");
+
+            var prdDate = document.getElementById("prd_date");
+            var prdDate_value = prdDate.value;
+            params["prd_date"] = prdDate_value;
+            console.log("製造日: ", prdDate_value)
+            
+            var theQR_No = document.getElementById("theQr_No");
+            var theQR_No_value = theQR_No.value;
+            //var theQR_No_key = theQR_No.attributes["name"].value;
+            params["QR_No"] = theQR_No_value;
+            console.log("QR_No: ", theQR_No_value)
+            //console.log("アイスの番号: ", theQR_No_key)
+            
+            var prdKind = document.getElementById("prd_select");
+            var prdKind_value = prdKind.value;
+            params["prd_kind"] = prdKind_value;
+            console.log("製造種目: ", prdKind_value)
+
+            var iceCount = document.getElementById("ice_count");
+            var iceCount_value = iceCount.value;
+            params["ice_count"] = iceCount_value;
+            console.log("個数: ", iceCount_value)
+
+            var confirm_text = document.getElementById("register_comfirm");
+            confirm_text.innerHTML = `<div>
+                <ul class="browser-default">
+                <li>製造日: ${prdDate_value}</li>
+                <li>製造種目: ${prdKind_value}</li>
+                <li>製造個数: ${iceCount_value}</li>
+                </ul>
+                </div>`;
+                // <li>${theQR_No_value}</li> QR_Noは表示していない
+
+            //confBtn.value = `${params}`;
+            console.log("送信内容: ", params);
+
+            $("#confirmed").click(async function() {
+                //const data = await makeRequest('/', 'post', body=JSON.stringify({"edit": params}));
+                //console.log(data);
+                confBtn.value = JSON.stringify(params);
+            });
+        }
+
+    </script>
+
+    <script>
+        // 確認ボタンの検証設定
+        const form = document.getElementById("form");
+        const button = document.getElementById("confirm-btn");
+
+        form.addEventListener("input", update);
+        form.addEventListener("change", update);
+
+        function update() {
+            const isRequired = form.checkValidity();
+
+            if (isRequired) {
+                button.disabled = false;
+                return
+            }
+        }
+
+    </script>
+
+    <script>
+        function countCheck () {
+            const confirmBtn = document.getElementById('confirm-btn');
+
+            var selectedCount = document.getElementById("ice_count");
+            var count_value = selectedCount.value;
+            
+            if (count_value.match(/[0-9]{1,3}/g) != count_value ) {
+                confirmBtn.disabled = true;
+                document.getElementById('alert2').innerHTML = '数値1~3桁で記入';
+            } else {
+                //document.getElementById('alert2').innerHTML = 'OK';
+                console.log('count ok');
+                document.getElementById('alert2').innerHTML = '';
+            }
+        }
+    </script>
+
+    <script>
+        // modal
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.modal');
+            var instances = M.Modal.init(elems, {dismissible: false});
+        });
+        
+    </script>
+
+    <script>
+        // calendar
+        $(document).ready(function(){
+            $('.datepicker').datepicker({ 
+                format: 'yyyy/mm/dd'
+            });
+        });
+    </script>
+
+    <script>
+        // options
+        $(document).ready(function(){
+            $('select').formSelect();
+        });
+    </script>
+
+    <script>
+        // input fields
+        $(document).ready(function() {
+            M.updateTextFields();
+        });
+    </script>
+{% endblock %}

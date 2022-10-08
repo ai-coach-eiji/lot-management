@@ -1,0 +1,113 @@
+{% extends 'lot/base.html' %}
+{% load static %}
+
+{% block extracss %}
+    <!-- customcss -->
+    <link rel="stylesheet" type="text/css" href="{% static 'lot/css/print.css' %}">
+{% endblock %}
+
+{% block extrajs %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <br>
+
+        {% if print_dict %}
+            <form id="form" class="col s12" action="" method="post">
+                {% csrf_token %}
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">print</i>
+                    <select id="print_select" onchange="inputChange()" required>
+                        <option value="" disabled selected>印刷する情報を選択</option>
+                        {% for key, value in print_dict.items %}
+                            <option id="{{ key }}">{{ value.0 }} （製造日: {{ value.1 }}）</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="print">
+                    <button id="print" class="btn center amber darken-1" name="print" value="" disabled>表示</button>
+                </div>
+            </form>
+        {% endif %}
+
+        <br>
+
+        {% if submit_dict %}
+            <h5 class="table-title">出荷･在庫管理記録表</h5>
+            <table class="striped bordered">
+                <thead>
+                <tr>
+                    <th></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                    {% for k, v in submit_dict.items %}
+                        <tr>
+                            <td class="center">{{ k }}</td>
+                            <td class="center">{{ v }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <br>
+
+            <table class="striped bordered">
+                <thead>
+                <tr>
+                    {% for h in ship_header %}
+                        <th class="center">{{ h }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+
+                <tbody>
+                    {% for k, v_list in submit_ship_dict.items %}
+                        <tr>
+                            {% for v in v_list %}
+                                <td class="center">{{ v }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <br>
+        {% endif %}
+        
+    </div>
+
+    <script>
+        function inputChange(){
+            let params = {};
+            const confBtn = document.getElementById("print");
+            
+            var printTag = document.getElementById("print_select");
+            console.log("selected: ", printTag)
+            var printTag_value = printTag.value;
+            params["選択された商品"] = printTag.options[printTag.selectedIndex].id;
+            console.log("商品: ", printTag_value)
+            confBtn.disabled = false;
+
+            confBtn.value = JSON.stringify(params);
+            console.log("送信内容: ", confBtn.value);
+        }
+    </script>
+
+    <script>
+        // options
+        $(document).ready(function(){
+            $('select').formSelect();
+        });
+    </script>
+
+    <script>
+        // input fields
+        $(document).ready(function() {
+            M.updateTextFields();
+        });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,281 @@
+{% extends 'lot/base.html' %}
+{% load static %}
+
+{% block extracss %}
+    <!-- customcss -->
+    <link rel="stylesheet" type="text/css" href="{% static 'lot/css/edit.css' %}">
+{% endblock %}
+
+
+{% block extrajs %}
+    
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <br>
+
+        <form id="form" class="col s12" action="" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">today</i>
+                    <input id="ship_date" type="text" class="datepicker" required>
+                    <label for="ship_date">出荷日</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s9">
+                    <i class="material-icons prefix">restore</i>
+                    <input value="2022" id="QR_No" maxlength="10" type="text" class="validate" onchange="inputCheck()" required>
+                    <div id="alert"></div>
+                    <label for="QR_No">QR_No（アイスの製造日）</label>
+                </div>
+                <div id="kind" class="input-field col s3">
+                    <input value="自動入力" disabled>
+                </div>
+            </div>
+            
+            <div class="input-field col s12">
+                <i class="material-icons prefix">local_shipping</i>
+                <select id="ship_select" required>
+                    <option value="" disabled selected>出荷先を選択</option>
+                    {% for key, value in ship_dict.items %}
+                        <option id="ship_{{ key }}">{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <br>
+
+            <div class="row">
+                <div class="input-field col s2">
+                    <label for="ice_count">個数</label>
+                </div>
+                
+                <div id="selected_count" class="input-field col s10">
+                    <input id="ice_count" maxlength="3" type="text" inputmode="numeric" pattern="\d*" onchange="countCheck()" required>
+                    <div id="alert2"></div>
+                </div>
+            </div>
+
+            <br>
+
+            <div>
+                <!-- Modal Trigger -->
+                <button id="confirm-btn" data-target="modal" type="submit" class="btn modal-trigger amber darken-1" onclick="get_values()" disabled>確認</button>
+            </div>
+        </form>
+
+        <!-- Modal Structure -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <h5 id="edit_comfirm">
+
+                </h5>
+                <p>上記の内容でよろしいでしょうか？</p>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <button id="confirmed" class="btn-flat modal-close green accent-2" name="edit" value="">Yes</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="edit-btn" class="btn center modal-close red darken-1">No</button>
+            </div>
+        </div>
+
+        {% if written %}
+            <div id="written"></div>
+        {% endif %}
+
+    </div>
+
+    <script>
+        const written = document.getElementById('written');
+        
+        if (written) {
+            window.Materialize.toast("編集内容を記録しました", 4000);
+        }
+    </script>
+
+    <script>
+        const form = document.getElementById("form");
+        const button = document.getElementById("confirm-btn");
+
+        form.addEventListener("input", update);
+        form.addEventListener("change", update);
+
+        function update() {
+            const isRequired = form.checkValidity();
+
+            if (isRequired) {
+                button.disabled = false;
+                return
+            }
+        }
+
+    </script>
+
+    <script>
+        async function makeRequest(url, method, body) {
+            let headers = {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/json'
+            }
+
+            if (method == 'post') {
+                const crsf = document.querySelector('[name=crsfmiddlewaretoken]').value
+                header['X-CSRFToken'] = crsf
+            }
+            let response = await fetch('/', {
+                method: method,
+                headers: headers,
+                body: body
+            })
+
+            return await response.json()
+        }
+        
+        async function get_values() {
+            let params = {};
+            const confBtn = document.getElementById("confirmed");
+
+            var shipDate = document.getElementById("ship_date");
+            var shipDate_value = shipDate.value;
+            params["ship_date"] = shipDate_value;
+            console.log("出荷日: ", shipDate_value)
+            
+            var selectedIce = document.getElementById("slectedIce");
+            var selectedIce_value = selectedIce.value;
+            var selectedIce_key = selectedIce.attributes["name"].value;
+            params["種類"] = selectedIce_value;
+            console.log("アイスの種類: ", selectedIce_value)
+            console.log("アイスの番号: ", selectedIce_key)
+            
+            var shipDest = document.getElementById("ship_select");
+            console.log("selected: ", shipDest)
+            var shipDest_value = shipDest.value;
+            params["出荷先"] = shipDest_value;
+            console.log("出荷先: ", shipDest_value)
+
+            var iceCount = document.getElementById("ice_count");
+            var iceCount_value = iceCount.value;
+            params["ice_count"] = iceCount_value;
+            console.log("個数: ", iceCount_value)
+            
+            var qrNo = document.getElementById("QR_No");
+            var qrNo_value = qrNo.value;
+            params["QR_No"] = qrNo_value;
+            console.log("QR_No: ", qrNo_value)
+
+            var confirm_text = document.getElementById("edit_comfirm");
+            confirm_text.innerHTML = `<div>
+                <ul class="browser-default">
+                <li>${shipDate_value}</li>
+                <li>${selectedIce_value}</li>
+                <li>${shipDest_value}</li>
+                <li>${iceCount_value}</li>
+                </ul>
+                </div>`;
+
+            //confBtn.value = `${params}`;
+            console.log("送信内容: ", params);
+
+            $("#confirmed").click(async function() {
+                //const data = await makeRequest('/', 'post', body=JSON.stringify({"edit": params}));
+                //console.log(data);
+                confBtn.value = JSON.stringify(params);
+            });
+        }
+
+    </script>
+
+    <script>
+        function countCheck () {
+            const confirmBtn = document.getElementById('confirm-btn');
+
+            var selectedCount = document.getElementById("ice_count");
+            var count_value = selectedCount.value;
+            
+            if (count_value.match(/[0-9]{1,3}/g) != count_value ) {
+                confirmBtn.disabled = true;
+                document.getElementById('alert2').innerHTML = '数値1~3桁で記入';
+            } else {
+                //document.getElementById('alert2').innerHTML = 'OK';
+                console.log('count ok');
+            }
+        }
+
+        function inputCheck () {
+            const kindTag = document.getElementById('kind');
+            const confirmBtn = document.getElementById('confirm-btn');
+            {% autoescape off %}
+            const itemDict = {{ item_dict }};
+            {% endautoescape %}
+
+            var qrNo = document.getElementById("QR_No");
+            var qrNo_value = qrNo.value;
+            
+            if (qrNo_value.match(/[0-9]{10}/g) != qrNo_value ) {
+                confirmBtn.disabled = true;
+                document.getElementById('alert').innerHTML = '数値10桁以外はNG';
+                kindTag.innerHTML = "";
+                qrNo.value = '';
+            } else {
+                //document.getElementById('alert').innerHTML = 'OK';
+                console.log('QR_No ok');
+                var last2num = qrNo_value.slice(-2);
+                //console.log('下2桁: ', last2num);
+                //console.log(itemDict)
+
+                for (let [key, value] of Object.entries(itemDict)) {
+                    //console.log('key:' + key + ' value:' + value);
+                    if(String(key)==String(last2num)) {
+                        var iceKind = itemDict[key];
+                        kindTag.innerHTML = `<input id="slectedIce" value="${iceKind}" name="${key}" disabled>`;
+                        //console.log("選択したアイスの種類: ", itemDict[key]);
+                    }
+                }
+
+                // kindTag.innerHTML = "";
+                // console.log(kindTag.innerHTML);
+                //confirmBtn.disabled = false;
+            }
+            //document.getElementById('output').innerHTML = qrNo_value;
+        }
+    </script>
+
+    <script>
+        // modal
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.modal');
+            var instances = M.Modal.init(elems, {dismissible: false});
+        });
+        
+    </script>
+
+    <script>
+        // calendar
+        $(document).ready(function(){
+            $('.datepicker').datepicker({ 
+                format: 'yyyy/mm/dd'
+            });
+        });
+    </script>
+
+    <script>
+        // options
+        $(document).ready(function(){
+            $('select').formSelect();
+        });
+    </script>
+
+    <script>
+        // input fields
+        $(document).ready(function() {
+            M.updateTextFields();
+        });
+    </script>
+{% endblock %}

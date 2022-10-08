@@ -1,0 +1,14 @@
+.addon-google {
+	background-color: hsl(345, 83%, 36%);
+	border: none;
+	border-radius: 2px 0px 0px 2px;
+	color: #fff;
+}
+ 
+.btn-google,
+.btn-google:hover {
+	background-color: hsl(345, 94%, 42%);
+	color: #fff;
+	border-radius: 0px 2px 2px 0px;
+	font-size: 15px;
+}

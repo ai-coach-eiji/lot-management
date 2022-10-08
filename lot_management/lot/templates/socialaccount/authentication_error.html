@@ -1,0 +1,21 @@
+{% extends "lot/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Social Network Login Failure" %}{% endblock %}
+
+{% block content %}
+    <br>
+    
+    <div class="container">
+        <h4>{% trans "Sign Up" %}</h4>
+        <br>
+    
+        <div class="row">
+            <h4>{% trans "Social Network Login Failure" %}</h4>
+
+            <p>{% trans "An error occurred while attempting to login via your social network account." %}</p>
+        </div>
+    </div>
+
+{% endblock %}

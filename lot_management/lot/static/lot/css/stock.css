@@ -1,0 +1,11 @@
+.refresh {
+    text-align: center;
+}
+
+.container {
+    width: 90%;
+}
+
+.not-visible {
+    display: none;
+}

@@ -1,0 +1,37 @@
+
+{% extends 'lot/base.html' %}
+
+{% block title %}Log In{% endblock %}
+
+{% block content %}
+    <br>
+
+    <div class="container">
+        {% if form.errors %}
+            <p class="red-text">ユーザー名もしくはパスワードが一致しません</p>
+        {% endif %}
+
+        <div class="row">
+            <div class="col s12 s4 offset-s4"></div>
+            <div class="card">
+                <div class="card-action center grey darken-1 white-text">
+                    <h4>LOT Appにログイン</h4>
+                </div>
+
+                <div class="card-content">
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="text" name="username" id="id_username" maxlength="150" autocapitalize="none" autocomplete="username" class="form-control" placeholder="ユーザー名" required autofocus>
+                        <input type="password" name="password" id="id_password" autocomplete="current-password" class="form-control" placeholder="パスワード" required autofocus>
+                        <input type="submit" class="btn amber darken-1" value="ログイン">
+                        <p><a href="{% url 'password_reset' %}">パスワードをお忘れの場合はこちら</a></p>
+                        <input type="hidden" name="next" value="{% url 'accounts:mypage' %}">
+                    </form>
+                </div>
+            </div>
+
+            <br>
+            <p>アカウントをお持ちでない場合は<a href="{% url 'accounts:signup' %}">登録</a></p>
+        </div>
+    </div>
+{% endblock %}

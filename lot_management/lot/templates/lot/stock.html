@@ -1,0 +1,126 @@
+{% extends 'lot/base.html' %}
+{% load static %}
+
+{% block extracss %}
+    <!-- customcss -->
+    <link rel="stylesheet" type="text/css" href="{% static 'lot/css/stock.css' %}">
+{% endblock %}
+
+
+{% block extrajs %}
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+
+        <br>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="refresh">
+                <button id="refresh" class="btn center amber darken-1" name="refresh" value="">更新</button>
+            </div>
+        </form>
+
+        <div id="progress-bar" class="progress not-visible">
+            <div class="indeterminate"></div>
+        </div>
+
+        <br>
+
+        {% if red_list %}
+            <p>エラー製造種目: </p>
+            {% for item in red_list %}
+                <p class="red-text">{{ item }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <div class="valign-wrapper">
+            <table class="highlight">
+                <thead>
+                <tr>
+                    <th>合計</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ item_sum }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <div class="valign-wrapper">
+            <table class="highlight">
+                <thead>
+                <tr>
+                    <th>エラー</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% if red_list %}
+                            <td class="red-text">{{ item_error }}</td>
+                        {% else %}
+                            <td>{{ item_error }}</td>
+                        {% endif %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <br>
+
+        {% autoescape off %}
+            {{ plot_div }}
+        {% endautoescape %}
+
+        <br>
+
+        <table class="highlight">
+            <thead>
+            <tr>
+                <th>種類</th>
+                <th>個数</th>
+            </tr>
+            </thead>
+
+            <tbody>
+                {% for k, v in item_stock.items %}
+                    <tr>
+                        <td>{{ k }}</td>
+                        <td>{{ v }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <br>
+
+        {% if stock_message %}
+            <div id="stock_updated"></div>
+        {% endif %}
+    </div>
+
+
+    <script>
+        const messageElem = document.getElementById('stock_updated');
+        const progressElem = document.getElementById('progress-bar')
+        
+        if (messageElem) {
+            window.Materialize.toast("{{stock_message}}", 4000);
+        }
+    </script>
+
+    <script>
+        const updateBtn = document.getElementById('refresh');
+
+        function toggle_btn() {
+            updateBtn.disabled = true;
+            progressElem.classList.remove('not-visible')
+        }
+    </script>
+
+{% endblock %}

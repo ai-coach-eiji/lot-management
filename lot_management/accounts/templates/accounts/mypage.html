@@ -1,0 +1,47 @@
+{% extends 'lot/base.html' %}
+
+{% block title %}My Page{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <br>
+
+        <div class="row">
+            <h4>My Page</h4>
+            <p>ユーザー名: {{ user.get_username }}</p>
+        </div>
+
+        <ul class="collection">
+            
+            <li class="collection-item avatar valign-wrapper">
+                <i class="material-icons circle green">home</i>
+                <p>
+                    <a href="{% url 'lot:index' %}">商品をスキャン</a>
+                </p>
+            </li>
+        </ul>
+
+        <br>
+            
+        <ul class="collection">
+            <li class="collection-item avatar valign-wrapper">
+                <i class="material-icons circle red">security</i>
+                <p>
+                    <a href="{% url 'password_change' %}">パスワードの変更はこちら</a>
+                </p>
+            </li>
+
+            <li class="collection-item avatar valign-wrapper">
+                <i class="material-icons circle">power_settings_new</i>
+                <p>
+                    <a href="{% url 'accounts:logout' %}">ログアウト</a>
+                </p>
+            </li>
+
+        </ul>
+
+
+        <br>
+
+    </div>
+{% endblock %}

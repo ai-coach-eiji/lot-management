@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "lot-management-354410",
+  "private_key_id": "d380611e06ebc20edb8d06f1c2f4f6210b8c2d26",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDeGiZ0S4wV7tr6\nOFGVDf7wwtmCMYLuVSQ6TDL0J65L9Oqh0RbNyU8/lVZNzA0r1/xz5YJxBEvWHf+A\nMd1PYrEgPQJEWWbkz7bIi/Z7q7gnDTtHmQW0hvE/WIpWVS9myITONWQDtom02hpT\nETs4+BwsB2ez6arqrUaAdMiz9gykVnzXw6a9N5U8AMl0oC+JqrTFcXHpKN2SMLnq\nHTXd6S3sj7BaRvm8E7L+dglGAApxdMx2GkcgJw6yacfl1OqaNj6np0RtQSsBqE1t\nxybEwBQlGEsgWHOZ1k84YTrL4GSx+03uzmr8B3UvoZtGBglu3StOHNRsj7R7bqx0\n9KI/gZbtAgMBAAECggEAIUM7VRlnXnWKOAUtOqyA7N/RoWz21ejMZyq4StaShO+m\nIBvnVWR7yOL9rOMNae6L8XOC6JgjH2sYs8NECLqYGmLorwHQph3xmvFTNcxO5RJX\nOW7Saun2wWzqMunJEpSfRx653tB8qSgs3xnqi6qk1Xc6cbhiD4lp0J0s3b7Qv9+o\noJB+PGow0zhE46LJ0fCubINh8IHvlXpPDtyQ1D7lU7T6zWZ68ah4tLsx0HLXL+sC\nHIG5iJOPWGOuMEufkBqyr7nXFPuWYlFhz1MsKhHwBtntSSmlqM54oq4YFfl3B7xW\ndfUhj7JCoQTVrKh60JjK4BHkTbtrCZVU+XVcHhj9wQKBgQDugZYjmcbk/H+vMCG2\ndaOz4WQce3ur1+2oMMPd1aZMHXbVZTM4ovZRutLgGbGPx+63qPjH2LR/ykGg95NO\nixGmPkUxMtTE95TTBOxQJcVf/Tk50tXGp9m8KwNn1OO+5a3KpykhAw2lYBF16SpG\nzg8UHkxkWgXLmmL9QiAikwyzvQKBgQDuZIvOSNuEKGs3bif/W7BmZiF1Jcvdawas\nmP2KnHgnWvg9JewgPlmK9wJtE0AQpJ15/PHD3kfCQ8IMy+/ELmINHrHx349/ALfz\nhLYgowunpEKYTbiKZnES05nLPhl+q0XQNzK/Pn2Lzm3vBRzgQYJ9uITQlmtSJeuC\nk6pwTJMK8QKBgQCXCkupafYSB3FY4VNIOEGeZcs/WlfcYJcpnxA7CNUSeMpLo5YH\ndPQml/h5YOwYkNW1S3WZIbxU/SIIrSCFaf6YV/D7kiQ6REvkQsbgjrrq6fL2knU9\nJAj4aAj1FVXRC6S+pJOgS022ABuunyVdx5q28+UO3A+1e6Tam6i8HIG7xQKBgQCU\nt3zP73uh8mUQa1PgZZ6iAsyUfEO1mXLMcZSZyArc4k9CNkobw0mw+280BHJO76Kd\n20InYp95fTOtL/wfcqAQdzmjHkgyfoxDCmNj8NLwffRddv7MuCOKDx8+PztAXjBr\nOEQcMiu378t89L+S1stFCrswNOY2lRlamCwXam3AwQKBgEI0e4dg5c0Iv03zZ97e\niygOuTdZm3kDEG1Q5ESlQpiNBiKg3fP+SEwiQX4Mg6XJYTd1Hkp6LZs2hs4t8QTE\naMpnJVQKuodRvLFlvkJtAHGoj8Z09zIWYsE1xXSGjcOL4ItSE7KaRV1mlXog69hz\nkFvxqouiWvjdgqYIELooh0r5\n-----END PRIVATE KEY-----\n",
+  "client_email": "lot-sheet@lot-management-354410.iam.gserviceaccount.com",
+  "client_id": "118150043626290091864",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/lot-sheet%40lot-management-354410.iam.gserviceaccount.com"
+}

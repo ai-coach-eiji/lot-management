@@ -1,0 +1,10 @@
+.table-title {
+    text-align: center;
+}
+
+table { border-collapse: collapse; }
+
+td {
+  border-right: solid 1px rgb(133, 133, 133); 
+  border-left: solid 1px rgb(133, 133, 133);
+}

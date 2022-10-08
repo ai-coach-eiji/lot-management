@@ -1,0 +1,37 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+.scan-button {
+    text-align: center;
+}
+
+.brand-logo {
+    margin-left: 2vw;
+}
+
+.nav-wrapper a {
+    text-decoration: none;
+}
+
+.page-footer {
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-copyright .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-copyright a {
+    text-decoration: none;
+}

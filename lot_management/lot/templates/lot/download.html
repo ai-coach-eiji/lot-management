@@ -1,0 +1,110 @@
+{% extends 'lot/base.html' %}
+{% load static %}
+
+{% block extracss %}
+    <!-- customcss -->
+    <link rel="stylesheet" type="text/css" href="{% static 'lot/css/download.css' %}">
+{% endblock %}
+
+{% block extrajs %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <br>
+
+        <h5 class="title">更新ページ</h5>
+
+        <br>
+
+        <div class="row">
+            <div class="col s12">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="prd_download">
+                        <button id="prd_download" class="btn center amber darken-1" name="prd_download" value="">製造シート</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="ship_download">
+                        <button id="ship_download" class="btn center amber darken-1" name="ship_download" value="">出荷シート</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr>
+
+        <!-- <div class="col s6">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="">
+                    <button id="" class="btn center amber darken-1" name="test" value="">テストzip</button>
+                </div>
+            </form>
+        </div> -->
+
+        <br>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="prd_ship_done">
+                <!-- Modal Trigger -->
+                <button id="prd_ship_done" data-target="modal" type="submit" class="btn modal-trigger center red darken-1" name="prd_ship_done" value="">製造出荷完了</button>
+            </div>
+        </form>
+
+
+        <!-- Modal Structure -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <h5 id="prd_ship_done_comfirm">
+                    製造シートと出荷シートのバックアップを取りましたか？
+                </h5>
+                <div>
+                    <ul class="browser-default">
+                        <p>Yesを押すと、</p>
+                        <li>在庫が0になった製造種目の情報が製造出荷完了シートに反映され、</li>
+                        <li>製造シートと出荷シートの情報が失われます。</li>
+                    </ul>
+                </div>
+                <p>製造出荷完了シートを作成しますがよろしいでしょうか？</p>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <button id="confirmed" class="btn-flat modal-close green accent-2" name="create_done_sheet" value="">Yes</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-btn" class="btn center modal-close red darken-1">No</button>
+            </div>
+        </div>
+
+        {% if result %}
+            <div id="result"></div>
+                
+        {% endif %}
+
+    </div>
+
+    <script>
+        // modal
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.modal');
+            var instances = M.Modal.init(elems, {dismissible: false});
+        });
+        
+    </script>
+
+    <script>
+        const written = document.getElementById('result');
+        
+        if (written) {
+            window.Materialize.toast("{{ result }}", 4000);
+        }
+    </script>
+
+{% endblock %}

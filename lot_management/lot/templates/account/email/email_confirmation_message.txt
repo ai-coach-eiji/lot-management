@@ -1,0 +1,14 @@
+{% extends "account/email/base_message.txt" %}
+{% load i18n %}
+{% load account %}
+
+{% block content %}
+{% autoescape off %}
+{% user_display user as user_display %}
+{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}
+    {{ site_domain }}にて、あなたのメールアドレスがユーザーの仮登録に使用されました。
+    ご本人様の場合は以下のリンクからご登録ください。
+    {{ activate_url }}
+{% endblocktrans %}
+{% endautoescape %}
+{% endblock %}

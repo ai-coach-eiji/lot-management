@@ -1,0 +1,43 @@
+{% extends "lot/base.html" %}
+{% load i18n %}
+{% load account %}
+
+{% block title %}Confirm E-mail Address{% endblock %}
+
+
+{% block content %}
+    <br>
+
+    <div class="container">
+
+        <div class="row">
+
+            <h4>ご本人様確認</h4>
+
+            {% if confirmation %}
+
+                {% user_display confirmation.email_address.user as user_display %}
+                <p>以下のご登録情報をご確認ください。</p>
+                <p>
+                    {% blocktrans with confirmation.email_address.email as email %}
+                        メールアドレス: <a href="mailto:{{ email }}">{{ email }}</a>
+                    {% endblocktrans %}
+                </p>
+                <br>
+                <p>ユーザー登録を確定するには下のボタンを押してください。</p>
+
+                <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+                    {% csrf_token %}
+                    <button class="btn amber darken-1" type="submit">確定</button>
+                </form>
+            {% else %}
+                {% url 'account_email' as email_url %}
+
+                <p>アカウント登録用リンクが無効もしくは有効期限が過ぎています。<br>
+                    こちらから再度<a href="{% url 'account_signup' %}">登録</a>お願いします。
+                </p>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
