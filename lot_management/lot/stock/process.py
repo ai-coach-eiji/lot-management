@@ -5,7 +5,7 @@ from ..constant.item import item_dict
 from ..authentication import gsheet as gs
 from ..manipulation.extract import column_as_list, get_idx_list
 from ..manipulation.check import check_error
-from ..utils2.chart import create_bar_chart
+#from ..utils2.chart import create_bar_chart
 from ..utils2.draw import draw_msg, reference_item, draw_red
 
 from ..manipulation.count import get_nlogged_dict, subtract_stock, update_loginfo, write_error, calc_latest_stock, write_item_stock, write_prd_allstock
