@@ -100,6 +100,11 @@
             console.log('video width, height: ', canvas.width, canvas.height);
         }, false );
 
+        // iOS（~14.7.1まで確認済み）に対応するには以下3行が必要
+        // video.setAttribute('autoplay', '');
+        // video.setAttribute('muted', '');
+        // video.setAttribute('playsinline', '');
+
         var ctx = canvas.getContext("2d");
 
         var constraints = {
