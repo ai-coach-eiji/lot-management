@@ -73,6 +73,7 @@ Production Config
 - stackoverflow: [flip img in canvas without scaling(EN)](https://stackoverflow.com/questions/29237305/how-to-flip-an-image-with-the-html5-canvas-without-scaling)
 REFFECT: [How to display webcam frames in the browser?(JA)](https://reffect.co.jp/html/javascript-webcamera)
 - stackoverflow: [Select native for IOS & Android(EN)](https://stackoverflow.com/questions/60307437/materializecss-select-native-for-ios-android)
+- stackoverflow: [Navigator.mediaDevices.getUserMedia not working(EN)](https://stackoverflow.com/questions/53483975/navigator-mediadevices-getusermedia-not-working-on-ios-12-safari)
 
 
 
