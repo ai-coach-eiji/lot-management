@@ -28,7 +28,9 @@ Local Config
 
 Production Config
 ---
-- [] Check with iPhone
+- [ ] Check with iPhone
+- [x] ~~Chenge the scan process from backend to frontend~~
+- [ ] Confirm the Google auth in production
 
 # Reference
 - OpenCV: [Reading images](http://labs.eecs.tottori-u.ac.jp/sd/Member/oyamada/OpenCV/html/py_tutorials/py_gui/py_video_display/py_video_display.html)
@@ -65,6 +67,12 @@ Production Config
 - django-allauth: [django-allauth Doc(EN)](https://django-allauth.readthedocs.io/en/latest/providers.html)
 - django Doc: [release-notes(EN)](https://django-allauth.readthedocs.io/en/latest/release-notes.html#section-5)
 - Google Identity: [Sign-In Branding Guidelines(EN)](https://developers.google.com/identity/branding-guidelines#padding)
+- pythonanywhere: [How to set environment variables for your web apps?(EN)](https://help.pythonanywhere.com/pages/environment-variables-for-web-apps)
+- stackoverflow: [Draw video on canvas(EN)](https://stackoverflow.com/questions/33834724/draw-video-on-canvas-html5)
+- stackoverflow: [Horizontally flipping(EN)](https://stackoverflow.com/questions/47742208/horizontally-flipping-getusermedias-webcam-image-stream)
+- stackoverflow: [flip img in canvas without scaling(EN)](https://stackoverflow.com/questions/29237305/how-to-flip-an-image-with-the-html5-canvas-without-scaling)
+REFFECT: [How to display webcam frames in the browser?(JA)](https://reffect.co.jp/html/javascript-webcamera)
+- stackoverflow: [Select native for IOS & Android(EN)](https://stackoverflow.com/questions/60307437/materializecss-select-native-for-ios-android)
 
 
 
