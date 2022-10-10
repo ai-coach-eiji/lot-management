@@ -8,11 +8,9 @@ from oauth2client.service_account import ServiceAccountCredentials
 #from .sheet_keys import SPREADSHEET_KEY, json_name
 from ..manipulation.extract import extract_as_df
 
-import environ
-env = environ.Env()
-env.read_env('.env')
-SPREADSHEET_KEY = env('SPREADSHEET_KEY')
-json_name = env('JSON_NAME')
+
+SPREADSHEET_KEY = os.getenv('SPREADSHEET_KEY')
+json_name = os.getenv('JSON_NAME')
 
 
 def get_sheet_values(sheet_name):

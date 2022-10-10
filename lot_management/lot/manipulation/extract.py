@@ -45,8 +45,11 @@ def get_item_name(item_n):
 def get_idx(df, column_name, target):
     # target（検索したい値）が列（column_name）にある場合、その最初の行番号（idx）を取得
     target_idx = df.index[df[column_name] == target].tolist() # targetと一致するのは何行目か（ = 行のidxを取得）
-    target_idx = int(target_idx[0]) # 最初のidxのみを取得
-    print("指定値に一致した行番号: ", target_idx) # DEBUG用（ToDo index out of range が出たら、editで追加したQR_Noと一致していない可能性あり）
+    if target_idx != []:
+        target_idx = int(target_idx[0]) # 最初のidxのみを取得
+        print("指定値に一致した行番号: ", target_idx) # DEBUG用（ToDo index out of range が出たら、editで追加したQR_Noと一致していない可能性あり）
+    else:
+        print("[get_idx func] 指定値に一致しませんでした")
     return target_idx
 
 def get_idx_list(df, column_name, target):

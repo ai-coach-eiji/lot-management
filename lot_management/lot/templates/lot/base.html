@@ -73,7 +73,7 @@
             <div>
                 <!-- 正常の場合はフラッシュメッセージを緑色で描画-->
                 {% for message in messages %}
-                    <p>{{ message.tags }}</p>
+                    <!-- <p>{{ message.tags }}</p> -->
                     {% if message.tags == 'success' %}
                         <div class="alert card green lighten-4 green-text text-darken-4">
                             <div class="card-content">

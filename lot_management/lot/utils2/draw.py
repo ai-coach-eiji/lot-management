@@ -32,7 +32,7 @@ def reference_item(image, d_contents, lot_values_list):
         message = '製造シート内の番号と一致しませんでした'
         color = red # エラーの場合は赤で描画
 
-    image = draw_msg(image, message, color, (30, 150))
+    image = draw_msg(image, message, color, (120, 100))
     return image
 
 def draw_red(prd_df, error_list):

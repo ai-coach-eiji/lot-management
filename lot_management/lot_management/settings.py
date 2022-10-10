@@ -13,22 +13,17 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 
-import environ
-env = environ.Env()
-env.read_env('.env')
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = os.getenv("DEBUG")
 print("モード: ", DEBUG) # DEBUG用
 if DEBUG:
     SECURE_SSL_REDIRECT = False
@@ -39,7 +34,7 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
 #ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS'),
 
 # Application definition
 # 上から順に優先されるため、デフォルトを上書きする必要がなければ順に追加していく
@@ -86,6 +81,7 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
         'AUTH_PARAMS': {
             'access_type': 'online',
+            'redirect_uri': os.getenv('REDIRECT_URI'),
         }
     }
 }
@@ -183,11 +179,11 @@ STATIC_ROOT = os.path.join(BASE_DIR,'static') # リバースプロキシ配信�
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL') # メール送信元アドレス
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL') # メール送信元アドレス
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = env('EMAIL_HOST_USER') # メールアドレス
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD') # アプリパスワード
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER') # メールアドレス
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD') # アプリパスワード
 EMAIL_USE_TLS = True
 
 

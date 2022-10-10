@@ -16,14 +16,18 @@
         {% if print_dict %}
             <form id="form" class="col s12" action="" method="post">
                 {% csrf_token %}
-                <div class="input-field col s12">
-                    <i class="material-icons prefix">print</i>
-                    <select id="print_select" onchange="inputChange()" required>
-                        <option value="" disabled selected>印刷する情報を選択</option>
-                        {% for key, value in print_dict.items %}
-                            <option id="{{ key }}">{{ value.0 }} （製造日: {{ value.1 }}）</option>
-                        {% endfor %}
-                    </select>
+                <div class="row">
+                    <div class="input-field col s2">
+                        <i class="material-icons prefix">print</i>
+                    </div>
+                    <div class="input-field col s10">
+                        <select class="browser-default" id="print_select" onchange="inputChange()" required>
+                            <option value="" disabled selected>印刷する情報を選択</option>
+                            {% for key, value in print_dict.items %}
+                                <option id="{{ key }}">{{ value.0 }} （製造日: {{ value.1 }}）</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
                 <div class="print">
                     <button id="print" class="btn center amber darken-1" name="print" value="" disabled>表示</button>

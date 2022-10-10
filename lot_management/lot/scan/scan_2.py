@@ -43,7 +43,7 @@ def scan_img(image, ship_date):
     
     else:
         #print("QRコードが確認できませんでした") # DEBUG用
-        image = draw_msg(image, "QRコードの検出に失敗しました", (0,50,255), (200,200), size=60)
+        image = draw_msg(image, "QRコードの検出に失敗しました", (0,50,255), (120, 100), size=30)
     
     img_base64 = cv_to_base64(image) # ブラウザで表示できる形式に変換（cv2をbase64に）
     return img_base64, False
@@ -67,7 +67,7 @@ def search_QR(prd_df, d_contents, image, same=False):
         image = reference_item(image, d_contents, lot_number_list) # スキャンした商品名を画像に描画
     else:
         print("読み取った製造日はシートに存在しません") # DEBUG用
-        image = draw_msg(image, "シートに存在しない製造日です!", (0,50,255), (200,200), size=60)
+        image = draw_msg(image, "シートに存在しない製造日です!", (0,50,255), (120, 100), size=30)
     return image, same
 
 def get_qr_date(prd_df):
@@ -83,5 +83,8 @@ def get_qr_date(prd_df):
 def check_QR(prd_df, d_contents, qr_column="QR_No"):
     # QR_Noを照合（一致: True）
     qr_idx = get_idx(prd_df, qr_column, d_contents) # 特定の列（QR_No）に含まれる値（d_contents）のidxを取得
-    check_value = prd_df.at[qr_idx, qr_column] # シートにあるQR_Noを取り出してみる
+    if qr_idx != []:
+        check_value = prd_df.at[qr_idx, qr_column] # シートにあるQR_Noを取り出してみる
+    else:
+        check_value = False
     return check_item(check_value, d_contents) # QR_Noを照合

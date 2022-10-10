@@ -217,7 +217,7 @@ class IndexView(View):
 
         return render(request, self.template_name, params)
 
-
-def stream_view():
-    # WEBカメラの画像をストリーム配信
-    return lambda _: StreamingHttpResponse(gen(Stream()), content_type='multipart/x-mixed-replace; boundary=frame')
+# ローカルPCのwebcamをopencvで起動する場合のみ有効
+# def stream_view():
+#     # WEBカメラの画像をストリーム配信
+#     return lambda _: StreamingHttpResponse(gen(Stream()), content_type='multipart/x-mixed-replace; boundary=frame')

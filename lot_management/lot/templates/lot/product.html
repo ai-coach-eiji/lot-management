@@ -27,17 +27,19 @@
             </div>
 
             <div class="row">
-                <div class="input-field col s9">
+                <div class="input-field col s2">
                     <i class="material-icons prefix">store</i>
-                    <select id="prd_select" required>
+                </div>
+                <div class="input-field col s6">
+                    <select class="browser-default" id="prd_select" required>
                         <option value="" disabled selected>製造種目を選択</option>
                         {% for key, value in item_dict.items %}
                             <option id="{{ key }}">{{ value }}</option>
                         {% endfor %}
                     </select>
                 </div>
-                <div id="qr_no" class="input-field col s3">
-                    <input value="QR_No自動入力" disabled>
+                <div id="qr_no" class="input-field col s4">
+                    <input value="自動入力" disabled>
                 </div>
             </div>
             

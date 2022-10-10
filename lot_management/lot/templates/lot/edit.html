@@ -27,25 +27,29 @@
             </div>
 
             <div class="row">
-                <div class="input-field col s9">
+                <div class="input-field col s6">
                     <i class="material-icons prefix">restore</i>
-                    <input value="2022" id="QR_No" maxlength="10" type="text" class="validate" onchange="inputCheck()" required>
+                    <input value="2022" id="QR_No" maxlength="10" type="text" inputmode="numeric" class="validate" onchange="inputCheck()" required>
                     <div id="alert"></div>
-                    <label for="QR_No">QR_No（アイスの製造日）</label>
+                    <label for="QR_No">QR_No（製造日）</label>
                 </div>
-                <div id="kind" class="input-field col s3">
+                <div id="kind" class="input-field col s6">
                     <input value="自動入力" disabled>
                 </div>
             </div>
             
-            <div class="input-field col s12">
-                <i class="material-icons prefix">local_shipping</i>
-                <select id="ship_select" required>
-                    <option value="" disabled selected>出荷先を選択</option>
-                    {% for key, value in ship_dict.items %}
-                        <option id="ship_{{ key }}">{{ value }}</option>
-                    {% endfor %}
-                </select>
+            <div class="row valign-wrapper">
+                <div class="col s2">
+                    <i class="material-icons prefix">local_shipping</i>
+                </div>
+                <div class="input-field col s10">
+                    <select class="browser-default" id="ship_select" required>
+                        <option value="" disabled selected>出荷先を選択</option>
+                        {% for key, value in ship_dict.items %}
+                            <option id="ship_{{ key }}">{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
             
             <br>
@@ -224,7 +228,7 @@
                 kindTag.innerHTML = "";
                 qrNo.value = '';
             } else {
-                //document.getElementById('alert').innerHTML = 'OK';
+                document.getElementById('alert').innerHTML = '';
                 console.log('QR_No ok');
                 var last2num = qrNo_value.slice(-2);
                 //console.log('下2桁: ', last2num);

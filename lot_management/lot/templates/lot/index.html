@@ -14,7 +14,6 @@
 
 {% block content %}
     <div class="container">
-        <!--<a class="btn yellow" href="{% url 'lot:stream' %}" alt="">Scan</a>-->
         
         <br>
         <form action="" method="post">
@@ -27,7 +26,7 @@
 
         <div class="row">
             <div class="col s12">
-                <img src="{% url 'lot:stream' %}" id="stream"/>
+                <img src="{% static 'lot/img/processing.png' %}" id="stream">
             </div>
         </div>
 
@@ -86,10 +85,63 @@
 
         {% endif %}
 
-        
-            
-
+    
     </div>
+    <script>
+        const canvas = document.createElement("canvas");
+        const imgTag = document.getElementById("stream"); // img tag
+        const video = document.createElement("video");
+        
+        video.addEventListener("loadedmetadata", function (e) {
+            // canvas.width = this.videoWidth,
+            // canvas.height = this.videoHeight;
+            canvas.width = this.videoWidth,
+            canvas.height = this.videoHeight;
+            console.log('video width, height: ', canvas.width, canvas.height);
+        }, false );
+
+        var ctx = canvas.getContext("2d");
+
+        var constraints = {
+            audio: false, 
+            video: {facingMode: "user"} // バックカメラは {facingMode: {exact: 'environment'}}
+        };
+        navigator.mediaDevices.getUserMedia(constraints)
+        .then(stream => {
+            video.srcObject = stream;
+            video.play();
+
+            update();
+        }).catch(e => {
+          console.log(e);
+        })
+
+        function update() {
+            // webカメラに映るフレームをcanvasにレンダリング
+            ctx.scale(-1, 1); // xミラー表示: (-1, 1)
+            ctx.drawImage(video,0,0,-video.videoWidth,video.videoHeight);
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+            imgTag.src = canvas.toDataURL("image/png"); // 送信可能なURLに変換
+            requestAnimationFrame(update); // wait for the browser to be ready to present another animation fram.       
+        }
+
+        function getBase64Image(imgTag) {
+            var dataURL = imgTag.src; // imgタグからURLを取得
+            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+        }
+
+        function send_img() {
+            console.log('sending');
+            
+            var base64 = getBase64Image(imgTag);
+            document.getElementById('scan-btn').value = base64;
+            console.log('WebCamera off');
+            document.getElementById("stream").src = "{% static 'lot/img/processing.png' %}";
+            
+        }
+    </script>
+
     <script>
         const comfirmedElem = document.getElementById('ship_comfirmed');
         const noCandidateElem = document.getElementById('no_candidate');
@@ -108,28 +160,6 @@
     </script>
 
     <script>
-        function getBase64Image(img) {
-            var canvas = document.createElement("canvas");
-            canvas.width = img.naturalWidth;
-            canvas.height = img.naturalHeight;
-            console.log(canvas.width, canvas.height);
-            var ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0);
-            var dataURL = canvas.toDataURL("image/png");
-            return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-        }
-
-        function send_img() {
-            console.log('sending');
-            var base64 = getBase64Image(document.getElementById("stream"));
-            document.getElementById('scan-btn').value = base64;
-            console.log('WebCamera off');
-            document.getElementById("stream").src = "{% static 'lot/img/processing.png' %}";
-        }
-        
-    </script>
-
-    <script>
         const elem = document.getElementById('modal');
         const elem2 = document.getElementById('modal2');
         const instance2 = M.Modal.init(elem2, {dismissible: false});
@@ -138,25 +168,6 @@
             const instance = M.Modal.init(elem, {dismissible: false});
             instance.open();
         }
-        
-    </script>
-
-    <script>
-        const img = document.getElementById('scanned');
-
-        function video_on() {
-            console.log('on');
-            document.getElementById("stream").src = "stream/";
-        }
-
-        function video_off() {
-            console.log('off');
-            document.getElementById("stream").src = "{% static 'lot/img/scan_text.png' %}";
-        }
-        
-        $("#scanned").bind("load", function(){
-            video_on();
-        });
         
     </script>
 
