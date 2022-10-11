@@ -107,6 +107,14 @@
     <script>
         const form = document.getElementById("form");
         const button = document.getElementById("confirm-btn");
+        const qrNoTag = document.getElementById("QR_No");
+        var qrNo_value = qrNoTag.value;
+
+        {% autoescape off %}
+            const itemDict = {{ item_dict }};
+            var qr_str_list  = {{ qr_list }};
+            //var qr_array = JSON.parse(qr_str_list);
+        {% endautoescape %}
 
         form.addEventListener("input", update);
         form.addEventListener("change", update);
@@ -115,32 +123,17 @@
             const isRequired = form.checkValidity();
 
             if (isRequired) {
-                button.disabled = false;
-                return
+                if (qr_str_list.includes(String(qrNo_value))){ // フォームに記入したQR_Noが製造シートにある場合は送信できる
+                    button.disabled = false;
+                    document.getElementById('alert').innerHTML = '';
+                    return
+                }
             }
         }
 
     </script>
 
     <script>
-        async function makeRequest(url, method, body) {
-            let headers = {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Content-Type': 'application/json'
-            }
-
-            if (method == 'post') {
-                const crsf = document.querySelector('[name=crsfmiddlewaretoken]').value
-                header['X-CSRFToken'] = crsf
-            }
-            let response = await fetch('/', {
-                method: method,
-                headers: headers,
-                body: body
-            })
-
-            return await response.json()
-        }
         
         async function get_values() {
             let params = {};
@@ -188,8 +181,6 @@
             console.log("送信内容: ", params);
 
             $("#confirmed").click(async function() {
-                //const data = await makeRequest('/', 'post', body=JSON.stringify({"edit": params}));
-                //console.log(data);
                 confBtn.value = JSON.stringify(params);
             });
         }
@@ -197,9 +188,10 @@
     </script>
 
     <script>
-        function countCheck () {
-            const confirmBtn = document.getElementById('confirm-btn');
+        const confirmBtn = document.getElementById('confirm-btn');
 
+        // 出荷個数を評価
+        function countCheck () {
             var selectedCount = document.getElementById("ice_count");
             var count_value = selectedCount.value;
             
@@ -207,18 +199,14 @@
                 confirmBtn.disabled = true;
                 document.getElementById('alert2').innerHTML = '数値1~3桁で記入';
             } else {
-                //document.getElementById('alert2').innerHTML = 'OK';
+                document.getElementById('alert2').innerHTML = '';
                 console.log('count ok');
             }
         }
 
+        // QR_Noが正しいか判定
         function inputCheck () {
             const kindTag = document.getElementById('kind');
-            const confirmBtn = document.getElementById('confirm-btn');
-            {% autoescape off %}
-            const itemDict = {{ item_dict }};
-            {% endautoescape %}
-
             var qrNo = document.getElementById("QR_No");
             var qrNo_value = qrNo.value;
             
@@ -229,11 +217,8 @@
                 qrNo.value = '';
             } else {
                 document.getElementById('alert').innerHTML = '';
-                console.log('QR_No ok');
                 var last2num = qrNo_value.slice(-2);
-                //console.log('下2桁: ', last2num);
-                //console.log(itemDict)
-
+                
                 for (let [key, value] of Object.entries(itemDict)) {
                     //console.log('key:' + key + ' value:' + value);
                     if(String(key)==String(last2num)) {
@@ -242,10 +227,18 @@
                         //console.log("選択したアイスの種類: ", itemDict[key]);
                     }
                 }
-
-                // kindTag.innerHTML = "";
-                // console.log(kindTag.innerHTML);
-                //confirmBtn.disabled = false;
+                
+                if (qr_str_list.includes(String(qrNo_value))){ // フォームに記入したQR_Noが製造シートにある場合は送信できる
+                    console.log('QR_No ok');
+                    document.getElementById('alert').innerHTML = '';
+                    confirmBtn.disabled = false;
+                    //console.log("qr list:", qr_str_list);
+                }
+                else {
+                    confirmBtn.disabled = true;
+                    document.getElementById('alert').innerHTML = '製造シートのQR_Noと一致しません';
+                    console.log('Invalid QR_No!!!');
+                }
             }
             //document.getElementById('output').innerHTML = qrNo_value;
         }
@@ -257,7 +250,6 @@
             var elems = document.querySelectorAll('.modal');
             var instances = M.Modal.init(elems, {dismissible: false});
         });
-        
     </script>
 
     <script>
@@ -270,9 +262,8 @@
 
         $(document).ready(function(){
             $('.datepicker').datepicker( {"format":'yyyy/mm/dd'} ).datepicker("setDate", new Date());
-            $('.datepicker').val(year+'/'+month+'/'+day);
+            $('.datepicker').val(year+'/'+month+'/'+day); // 今日の日付をデフォルト表示
         });
-
     </script>
 
     <script>

@@ -30,6 +30,7 @@ from .product.process import create_product
 from .download.process import crop_info
 from .print.process import get_all_items, show_selected_items
 from .scan.process import show_scan_result, write_ship_dest
+from .shipping.process import get_item_info
 
 @method_decorator(login_required, name='dispatch')
 class MyPageView(TemplateView):
@@ -170,8 +171,7 @@ class EditView(View):
 
     def get(self, request):
         params = {}
-        params['item_dict'] = item_dict # 製造種目とそのID辞書
-        params['ship_dict'] = ship_dict # 出荷先とそのID辞書
+        params = get_item_info(params) # 出荷フォーム画面記入に必要な情報を取得
         return render(request, self.template_name, params)
     
     def post(self, request, *args, **kwargs):
