@@ -29,7 +29,7 @@
             <div class="row">
                 <div class="input-field col s6">
                     <i class="material-icons prefix">restore</i>
-                    <input value="2022" id="QR_No" maxlength="10" type="text" inputmode="numeric" class="validate" onchange="inputCheck()" required>
+                    <input id="QR_No" maxlength="10" type="text" inputmode="numeric" class="validate" onchange="inputCheck()" required>
                     <div id="alert"></div>
                     <label for="QR_No">QR_No（製造日）</label>
                 </div>
@@ -262,11 +262,17 @@
 
     <script>
         // calendar
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth()+1;
+        var day = date.getDate();
+        var date = new Date(year, month, day);
+
         $(document).ready(function(){
-            $('.datepicker').datepicker({ 
-                format: 'yyyy/mm/dd'
-            });
+            $('.datepicker').datepicker( {"format":'yyyy/mm/dd'} ).datepicker("setDate", new Date());
+            $('.datepicker').val(year+'/'+month+'/'+day);
         });
+
     </script>
 
     <script>
