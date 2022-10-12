@@ -132,7 +132,11 @@ class ProductView(View):
         #print("post:", post_dict) # DEBUG用
 
         params = create_product(params, prd_writing_date, post_dict) # 製造種目を記録
-        return render(request, self.template_name, params)
+        messages.success(request, '製造シートに記録しました')
+
+        return HttpResponseRedirect(reverse('lot:product')) # ページ再読み込みの二重POST対策
+
+        #return render(request, self.template_name, params)
 
 
 @method_decorator(login_required, name='dispatch')
