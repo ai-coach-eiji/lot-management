@@ -17,12 +17,18 @@
 
         <br>
 
-        <form action="" method="post">
-            {% csrf_token %}
-            <div class="refresh">
-                <button id="refresh" class="btn center amber darken-1" name="refresh" value="">更新</button>
-            </div>
-        </form>
+        <div class="row center">
+            <h4>冷凍庫内在庫</h4>
+        </div>
+
+        {% if user.is_superuser %}
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="refresh">
+                    <button id="refresh" class="btn center amber darken-1" name="refresh" value="">更新</button>
+                </div>
+            </form>
+        {% endif %}
 
         <div id="progress-bar" class="progress not-visible">
             <div class="indeterminate"></div>

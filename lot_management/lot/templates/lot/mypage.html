@@ -16,7 +16,11 @@
             <li class="collection-item avatar valign-wrapper">
                 <i class="material-icons circle green">home</i>
                 <p>
-                    <a href="{% url 'lot:index' %}">商品をスキャン</a>
+                    {% if user.is_superuser %}
+                        <a href="{% url 'lot:index' %}">商品をスキャン</a>
+                    {% else %}
+                        <a href="{% url 'lot:stock' %}">在庫を確認</a>
+                    {% endif %}
                 </p>
             </li>
         </ul>
