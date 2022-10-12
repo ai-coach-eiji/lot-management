@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.urls import reverse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.http import StreamingHttpResponse
 from django.http import HttpResponseBadRequest
 
@@ -184,12 +185,14 @@ class EditView(View):
         ship_df, ship_sheet = gs.get_sheet_values("出荷シート") # シート名からその値を取得（pd用とgsheet更新用）
         updated_id = edit_shipping_byhand(ship_df, edit_date, post_dict) # 出荷シートに商品情報を手書きで編集
         write_shipping_byhand(ship_sheet, edit_date, post_dict, updated_id) # Google出荷シートに編集内容を記録
-        
-        params['written'] = updated_id # 編集内容を記載した行番号
-        params['item_dict'] = item_dict
-        params['ship_dict'] = ship_dict
+        messages.success(request, '出荷シートに記録しました')
 
-        return render(request, self.template_name, params)
+        return HttpResponseRedirect(reverse('lot:edit')) # ページ再読み込みの二重POST対策
+
+        # params['written'] = updated_id # 編集内容を記載した行番号
+        # params['item_dict'] = item_dict
+        # params['ship_dict'] = ship_dict
+        #return render(request, self.template_name, params)
 
 
 @method_decorator(login_required, name='dispatch')
